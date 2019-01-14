@@ -125,10 +125,10 @@ function __getCommand() {
 
   case $1 in
     "behat")
-      command=("$command php vendor/bin/behat --strict --format=progress --colors -v")
+      command=("$command php vendor/bin/behat" $(echo "${@:2}" "--strict --format=progress --colors -v"))
     ;;
     "unit")
-      command=("$command php vendor/bin/phpunit --configuration=phpunit.xml.dist --colors=never --coverage-text")
+      command=("$command php vendor/bin/phpunit --configuration=phpunit.xml.dist --colors=never" $(echo "${@:2}"))
     ;;
     *)
       command=($command $*)
