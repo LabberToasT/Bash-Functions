@@ -95,25 +95,20 @@ function __createProject() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __projectFolderNotExists() {
-  return 1
-
-
-  local dir=("$(__getProjectDir)$1")
-  if [ ! -d "$dir" ]; then
-    return 0
-  fi
-
-  return 1
+  eval "[ -d $(__getProjectDir)$1 ] && return 1 || return 0"
 }
 
 # ##
 # Funktion soll die Referenz zu dem angegebenen Projekt löschen
 # ##
 function __removeProject() {
-  echo "Not implemented"
+  local projectName=$1
+
   # Lösche das Projekt aus der Variable $supportedProjects
+  __removeProjectFromAutocomplete $projectName
 
   # Lösche das Projekt aus der autocomplete Funktion von zsh
+  __removeFromSupportedProjects $projectName
 }
 
 # ##
@@ -151,6 +146,22 @@ function __addProjectToAutocomplete() {
   do
     sed -i '' "2s/.*/$autocompleteCommand/" ~/.oh-my-zsh/completions/$file
   done
+}
+
+# ##
+# Funktion um ein Projekt aus den autocomplete Funktion der Projects suite zu entfernen
+#
+# Erwartet den Namen des Projekts als Argument
+# ##
+function __removeProjectFromAutocomplete() {
+    local projects=();
+    local autocompleteCommand="_arguments \"1: :($(__getSupportedProjectsOneLine $1))\""
+
+    local filesToWrite=('_goto' '_start' '_stop')
+    for file in "${filesToWrite[@]}"
+    do
+      sed -i '' "2s/.*/$autocompleteCommand/" ~/.oh-my-zsh/completions/$file
+    done
 }
 
 # ##
@@ -202,12 +213,22 @@ function __removeFromSupportedProjects() {
 
 # ##
 # Funktion um alle Projekte in einer Zeile anzuzeigen
+#
+# Der Funktion kann ein Projektnamen übergeben werden, sodass sie diesen ignoriert
 # ##
 function __getSupportedProjectsOneLine() {
+  if [ -z ${1+x} ]; then
+    excludedProject=""
+  else
+    excludedProject=$1
+  fi
+
   local projects=();
 
   cat ~/.supported_projects | while read project; do
-    projects+=("$project")
+    if [ "$project" != "$excludedProject" ]; then
+      projects+=("$project")
+    fi
   done
 
   echo $projects;

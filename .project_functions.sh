@@ -1,5 +1,4 @@
 #!/bin/bash
-supportedProjects=(IMS IMS-2 LMS NMS)
 
 # Place this file in the "~/" Directory.
 # After you added the file to the directory add "source ~/.project_functions.sh"
@@ -80,13 +79,6 @@ function __isRunning() {
 }
 
 # ##
-# Expects Project name to search for
-# ##
-function __getProjectDir(){
-  echo $(mdfind kind:folder "$1" | grep -E ".*Projects\/$1$")
-}
-
-# ##
 # Looks in the current dir for a GIT repository and extracts the name from the URL
 # ##
 function __getGitProjectName() {
@@ -106,13 +98,12 @@ function __getGitProjectName() {
 # Expects project name to search for
 # ##
 function __isProjectSupported() {
-  for project in "${supportedProjects[@]}"
-  do
-     :
-     if [ $(__toLower $project) = $(__toLower $1) ]; then
-       return 0 # TRUE
-     fi
-  done
+  projects=$(__getSupportedProjectsOneLine)
+
+  if [[ $projects =~ .*$1.* ]]
+  then
+     return 0 # TRUE
+  fi
 
   return 1 # FALSE
 }
