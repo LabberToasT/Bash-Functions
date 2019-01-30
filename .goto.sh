@@ -6,7 +6,5 @@ function goto() {
     return
   fi
 
-  project=$1
-
-  cd ~/Documents/Projects/$project
+  eval "cd $(__getProjectDir)$1"
 }

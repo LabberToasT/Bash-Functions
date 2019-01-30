@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: Config File mit dem Projectverzeichniss erstellen, was der User zu beginn einstellen muss (Wie git user.email/ user.name)
+# TODO: Delete Funktion muss noch implementiert werden
+
 # ##
 # Wenn der Funktion kein Argument übergeben wird, dann werden alle Unterstützte Projekte angezeit ($supportedProjects)
 #
@@ -138,8 +141,7 @@ function __setupProject() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __addProjectToAutocomplete() {
-  local projectName=$1
-  local autocompleteCommand="_arguments \"1: :($(__getSupportedProjectsOneLine) $projectName)\""
+  local autocompleteCommand="_arguments \"1: :($(__getSupportedProjectsOneLine) $1)\""
 
   local filesToWrite=('_goto' '_start' '_stop')
   for file in "${filesToWrite[@]}"
@@ -154,7 +156,6 @@ function __addProjectToAutocomplete() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __removeProjectFromAutocomplete() {
-    local projects=();
     local autocompleteCommand="_arguments \"1: :($(__getSupportedProjectsOneLine $1))\""
 
     local filesToWrite=('_goto' '_start' '_stop')
@@ -170,9 +171,7 @@ function __removeProjectFromAutocomplete() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __createProjectFolder() {
-  local projectName=$1
-
-  eval "mkdir $(__getProjectDir)$projectName"
+  eval "mkdir $(__getProjectDir)$1"
 }
 
 # ##
@@ -195,9 +194,7 @@ function __getProjectDir() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __addToSupportedProjects() {
-  local project=$1
-
-  eval "echo $project >> $(__getSupportedProjectsFileLoc)"
+  eval "echo $1 >> $(__getSupportedProjectsFileLoc)"
 }
 
 # ##
@@ -206,9 +203,7 @@ function __addToSupportedProjects() {
 # Erwartet den Namen des Projekts als Argument
 # ##
 function __removeFromSupportedProjects() {
-  local project=$1
-
-  eval "sed -i '' \"/$project/d\" $(__getSupportedProjectsFileLoc)"
+  eval "sed -i '' \"/$1/d\" $(__getSupportedProjectsFileLoc)"
 }
 
 # ##
