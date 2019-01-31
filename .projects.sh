@@ -1,7 +1,9 @@
 #!/bin/bash
+# Colours in Bash example: https://stackoverflow.com/a/5947802
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
 # TODO: Config File mit dem Projectverzeichniss erstellen, was der User zu beginn einstellen muss (Wie git user.email/ user.name)
-# TODO: Delete Funktion muss noch implementiert werden
 
 # ##
 # Wenn der Funktion kein Argument übergeben wird, dann werden alle Unterstützte Projekte angezeit ($supportedProjects)
@@ -118,9 +120,20 @@ function __removeProject() {
 # Funktion soll das Projekt komplett vom Computer löschen
 # ##
 function __deleteProject() {
-  echo "Not implemented"
-  # Frage den User ob er das Projekt wirklich löschen will
-  # --> Zeige dazu den Namen und das Verzeichnis des Projekts an
+  projectName=$1
+  projectDir=("$(__getProjectDir)$projectName")
+
+  echo -e "You are about to delete the project ${RED}$projectName${NC} from your System."
+  echo -e "All files in folder ${RED}$projectDir${NC} will be deleted."
+  echo "Are you sure you want to continue? (y/n)"
+  read response
+
+  if [ "$response" = "y" ]; then
+    eval "rm -rf $projectDir"
+    echo "Project has been deleted!"
+  else
+    echo "Aborting"
+  fi
 }
 
 # ##
@@ -179,13 +192,6 @@ function __createProjectFolder() {
 # ##
 function __getSupportedProjectsFileLoc() {
   echo "~/.supported_projects"
-}
-
-# ##
-# Funktion um den Pfad des aktuellen Projektverzeichnisses zu bekommen
-# ##
-function __getProjectDir() {
-  echo "~/Documents/Projects/"
 }
 
 # ##
