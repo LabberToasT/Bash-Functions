@@ -98,9 +98,9 @@ function __getGitProjectName() {
 # Expects project name to search for
 # ##
 function __isProjectSupported() {
-  projects=$(__getSupportedProjectsOneLine)
+  local lowerCaseProjects=$(__toLower $(__getSupportedProjectsOneLine))
 
-  if [[ $projects =~ .*$1.* ]]
+  if [[ $lowerCaseProjects =~ .*$1.* ]]
   then
      return 0 # TRUE
   fi
@@ -116,7 +116,7 @@ function __getCommand() {
 
   case $1 in
     "behat")
-      command=("$command php vendor/bin/behat" $(echo "${@:2}" "--strict --format=progress --colors -v"))
+      command=("$command php vendor/bin/behat" $(echo "${@:2}" "--strict --format=progress --colors"))
     ;;
     "unit")
       command=("$command php vendor/bin/phpunit --configuration=phpunit.xml.dist --colors=never" $(echo "${@:2}"))
