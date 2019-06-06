@@ -2,6 +2,7 @@
 # Colours in Bash example: https://stackoverflow.com/a/5947802
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+GREEN='\033[0;32m'
 
 # TODO: Config File mit dem Projectverzeichniss erstellen, was der User zu beginn einstellen muss (Wie git user.email/ user.name)
 
