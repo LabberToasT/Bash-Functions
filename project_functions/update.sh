@@ -16,6 +16,8 @@ function update() {
     return
   fi
 
+  # TODO: Hier sollte ich auch noch composer dump aufrufen
+
   __clearConsole
   # pull latest changes from Repository
   echo -e "${GREEN}Pulling latest changes from remote${NC}"

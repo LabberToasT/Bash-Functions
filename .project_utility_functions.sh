@@ -25,6 +25,9 @@ function __clearConsole() {
 #  3: File that contains the key
 # ##
 function __replaceKeyInFile() {
+  # TODO: Kann ich dem User hier eine auswahl der Keys in dem File geben,
+  # sodass man nicht in die Datei gucken muss um zu wissen,
+  # welche Keys man ausauschen kann
   local key=$1
   local newValue=$2
   local fileName=$3
@@ -62,7 +65,7 @@ function __getSupportedProjectsOneLine() {
 
   local projects=();
 
-  cat ~/.custom_commands/.supported_projects | while read project; do
+  cat ~/Bash-Functions/.supported_projects | while read project; do
     if [ "$project" != "$excludedProject" ]; then
       projects+=("$project")
     fi

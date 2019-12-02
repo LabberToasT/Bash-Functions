@@ -31,13 +31,13 @@ function __buildCommand() {
 
   case $1 in
     "behat")
-      command=("$command php vendor/bin/behat" $(echo "${@:2}" "--strict --format=progress --colors"))
+      command=("$command vendor/bin/behat " $(echo "${@:2}" "--strict --format=progress --colors -v"))
     ;;
     "unit")
-      command=("$command php vendor/bin/phpunit --configuration=phpunit.xml.dist --colors=never" $(echo "${@:2}"))
+      command=("$command vendor/bin/phpunit --colors=never --coverage-text" $(echo "${@:2}"))
     ;;
     "fixer")
-      command=("$command php vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --ansi")
+      command=("$command php-cs-fixer.phar fix --config=.php_cs.dist")
     ;;
     *)
       command=($command $*)
