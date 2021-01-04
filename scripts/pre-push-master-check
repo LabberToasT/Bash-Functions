@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+import sys, os, subprocess
+
+EXIT_SUCCESS = 0
+EXIT_FAILURE = 1
+RESTRICTED_BRANCH = 'master'
+
+def install():
+    project_root_dir = __get_project_root_dir()
+
+    script = "{}/scripts/pre-push-master-check".format(project_root_dir)
+    pre_push_script = "{}/.git/hooks/pre-push".format(project_root_dir)
+
+    os.symlink(script, pre_push_script)
+
+def uninstall():
+    project_root_dir = __get_project_root_dir()
+
+    pre_push_link = '{}/.git/hooks/pre-push'.format(project_root_dir)
+
+    os.unlink(pre_push_link)
+
+def guardAgainstPushToMaster():
+    if __is_current_branch_master() is False:
+        return EXIT_SUCCESS
+
+    user_input = input("You're about to push to master, is this what you intended? [y|n]")
+
+    if user_input is 'y':
+        return EXIT_SUCCESS
+    else:
+        return EXIT_FAILURE
+
+def __is_current_branch_master():
+    process = subprocess.Popen(["git", "symbolic-ref", "HEAD", "|", "sed", ""], stdout=subprocess.PIPE)
+    current_branch = process.communicate()[0]
+
+    return current_branch is RESTRICTED_BRANCH
+
+def __get_project_root_dir():
+    file_dir = os.path.abspath(__file__)
+
+    return os.path.dirname(os.path.dirname(file_dir))
+
+if __name__ == "__main__":
+    a = sys.argv[1]
+
+    if a is 'i' or a is 'install':
+        install()
+        exit(EXIT_SUCCESS)
+
+    if a is 'u' or a is 'uninstall':
+        uninstall()
+        exit(EXIT_SUCCESS)
+
+    exit(guardAgainstPushToMaster())

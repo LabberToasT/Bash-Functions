@@ -103,7 +103,7 @@ function __getSupportedProjectsOneLine() {
 
   local projects=();
 
-  cat ~/.custom_commands/.supported_projects | while read project; do
+  cat ~/Bash-Functions/.supported_projects | while read project; do
     if [ "$project" != "$excludedProject" ]; then
       projects+=("$project")
     fi

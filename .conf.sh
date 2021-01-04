@@ -33,7 +33,7 @@ function projects_config() {
 # Funktion um den Pfad des aktuellen Projektverzeichnisses zu bekommen
 # ##
 function __getProjectDir() {
-    source ~/.custom_commands/projects.conf
+    source ~/Bash-Functions/projects.conf
 
     echo "$project_path/$1"
 }
@@ -42,7 +42,7 @@ function __getProjectDir() {
 # Funktion um den Pfad zur TextDatei der unterstützen Projekte zu bekommen
 # ##
 function __getSupportedProjectsDir() {
-  source ~/.custom_commands/projects.conf
+  source ~/ Bash-Functions/projects.conf
 
   echo $supported_projects_path
 }
@@ -55,7 +55,7 @@ function __getSupportedProjectsDir() {
 function __saveProjectDir() {
   local newPath=$1
   local keyName=project_path
-  local configFile=~/.custom_commands/projects.conf
+  local configFile=~/Bash-Functions/projects.conf
 
   __replaceKeyInFile $keyName "\"$newPath\"" $configFile
 }

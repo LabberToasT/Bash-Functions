@@ -16,9 +16,10 @@ function update() {
     return
   fi
 
-  # TODO: Hier sollte ich auch noch composer dump aufrufen
-
   __clearConsole
+
+# TODO: Hier sollte ich überprüfen ob ich gerade auf dem master branch bin und kein geänderten Datein habe
+
   # pull latest changes from Repository
   echo -e "${GREEN}Pulling latest changes from remote${NC}"
   git pull
@@ -39,6 +40,6 @@ function update() {
 
   __clearConsole
   # Composer install für das Projekt ausführen
-  echo "${GREEN}Running composer install${NC}"
-  run composer install
+  echo "${GREEN}Running composer dump${NC}"
+  run composer dump
 }
