@@ -49,11 +49,20 @@ if __name__ == "__main__":
 
       if a is 'i' or a is 'install':
           install()
+          print("Hook was successfully installed")
           sys.exit(EXIT_SUCCESS)
 
       if a is 'u' or a is 'uninstall':
           uninstall()
+          print("Hook was successfully uninstalled")
           sys.exit(EXIT_SUCCESS)
 
     except IndexError as error:
-      sys.exit(guard_against_push_to_master())
+      exit_code = guard_against_push_to_master()
+
+      if exit_code == 1:
+          print("Abort pushing to master branch")
+      else:
+          print("Continue pushing to master branch")
+
+      sys.exit(exit_code)
